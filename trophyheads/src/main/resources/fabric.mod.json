@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "trophyheads",
+  "version": "${version}",
+  "name": "Trophy Heads / Трофейные головы",
+  "description": "Players drop their head as a trophy on death.",
+  "authors": ["Victor"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.victor.trophyheads.TrophyHeadsMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
