@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Camera.class)
 public abstract class CameraMixin {
     @Shadow protected abstract void setPos(Vec3d pos);
+    @Shadow protected abstract void setRotation(float yaw, float pitch);
 
     @Inject(method = "update", at = @At("TAIL"))
     private void livecamera$update(World area, Entity focusedEntity, boolean thirdPerson,
@@ -30,8 +31,14 @@ public abstract class CameraMixin {
         LiveCameraState.update(focusedEntity, tickProgress);
 
         Camera self = (Camera) (Object) this;
-        double yawRad = Math.toRadians(self.getYaw());
-        double pitchRad = Math.toRadians(self.getPitch());
+
+        // Камера слегка "отстаёт" при повороте
+        float newYaw = self.getYaw() + LiveCameraState.yawLag();
+        float pitch = self.getPitch();
+        this.setRotation(newYaw, pitch);
+
+        double yawRad = Math.toRadians(newYaw);
+        double pitchRad = Math.toRadians(pitch);
 
         // Вектор "вправо" относительно взгляда и вектор взгляда
         Vec3d right = new Vec3d(-Math.cos(yawRad), 0.0, -Math.sin(yawRad));
@@ -40,7 +47,7 @@ public abstract class CameraMixin {
                 -Math.sin(pitchRad),
                 Math.cos(yawRad) * Math.cos(pitchRad));
 
-        Vec3d head = focusedEntity.getCameraPosVec(tickProgress).add(0.0, LiveCameraState.breath(), 0.0);
+        Vec3d head = focusedEntity.getCameraPosVec(tickProgress).add(0.0, LiveCameraState.vertical(), 0.0);
 
         // 1) сдвиг в сторону (с защитой от стен), 2) отъезд назад (с защитой от стен)
         Vec3d sidePos = clip(area, focusedEntity, head, head.add(right.multiply(LiveCameraState.side())));
