@@ -1,6 +1,6 @@
 {
   "key.livecamera.toggle": "Toggle Live Camera",
-  "key.categories.livecamera": "Live Camera",
+  "key.category.livecamera.main": "Live Camera",
   "livecamera.enabled": "Live Camera: ON",
   "livecamera.disabled": "Live Camera: OFF"
 }
