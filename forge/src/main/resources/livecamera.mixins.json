@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "dev.victor.livecamera.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "livecamera.refmap.json",
+  "client": ["CameraMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

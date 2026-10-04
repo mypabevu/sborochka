@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[52,)"
+license = "MIT"
+
+[[mods]]
+modId = "livecamera"
+version = "${file.jarVersion}"
+displayName = "Live Camera / Живая камера"
+description = "Living over-the-shoulder third-person camera."
+authors = "Victor"
+
+[[dependencies.livecamera]]
+modId = "forge"
+mandatory = true
+versionRange = "[52,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.livecamera]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "CLIENT"

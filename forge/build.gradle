@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7.+'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+}
+apply plugin: 'org.spongepowered.mixin'
+
+group = 'dev.victor'
+version = project.mod_version
+base { archivesName = 'livecamera-forge' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+minecraft {
+    mappings channel: 'official', version: project.minecraft_version
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'debug'
+            mods { livecamera { source sourceSets.main } }
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, 'livecamera.refmap.json'
+    config 'livecamera.mixins.json'
+}
+
+repositories {
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+tasks.named('processResources') {
+    inputs.property 'version', project.version
+}
+
+jar {
+    manifest.attributes([
+        'Implementation-Version': project.version,
+        'MixinConfigs': 'livecamera.mixins.json'
+    ])
+    finalizedBy 'reobfJar'
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
