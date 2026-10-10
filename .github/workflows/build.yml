@@ -5,8 +5,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  livecamera:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mod: [fabric, trophyheads, topdowncamera]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -16,33 +20,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 9.2.0
-      - name: Build Live Camera
-        working-directory: fabric
+      - name: Build ${{ matrix.mod }}
+        working-directory: ${{ matrix.mod }}
         run: gradle build --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: livecamera-fabric-1.21.11
+          name: ${{ matrix.mod }}-1.21.11
           path: |
-            fabric/build/libs/*.jar
-            !fabric/build/libs/*-sources.jar
-
-  trophyheads:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: 9.2.0
-      - name: Build Trophy Heads
-        working-directory: trophyheads
-        run: gradle build --no-daemon
-      - uses: actions/upload-artifact@v4
-        with:
-          name: trophyheads-fabric-1.21.11
-          path: |
-            trophyheads/build/libs/*.jar
-            !trophyheads/build/libs/*-sources.jar
+            ${{ matrix.mod }}/build/libs/*.jar
+            !${{ matrix.mod }}/build/libs/*-sources.jar
