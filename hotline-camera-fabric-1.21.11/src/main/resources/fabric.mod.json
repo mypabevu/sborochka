@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "hotlinecamera",
+  "version": "${version}",
+  "name": "Hotline Camera",
+  "description": "Fourth F5 camera mode: top-down view.",
+  "environment": "client",
+  "entrypoints": {"client": ["com.example.hotlinecamera.HotlineCameraClient"]},
+  "mixins": ["hotlinecamera.mixins.json"],
+  "depends": {"fabricloader": ">=0.18.1", "minecraft": "1.21.11", "java": ">=21"}
+}
