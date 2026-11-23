@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [fabric, trophyheads, topdowncamera]
+        mod: [fabric, trophyheads, topdowncamera, hotline-camera-fabric-1.21.11]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
